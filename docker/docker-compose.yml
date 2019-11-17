@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=ecommerce
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=secret
+    ports:
+      - "3306:3306"
+
+  # TODO: add wait-for-it script or similar solution
+  ecommerce-api:
+    image: ecommerce-api
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
